@@ -26,13 +26,42 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
+
+        const touristSpotCollection = client.db('tourist').collection('spots');
+
+
+
+
+        app.get('/tourists', async (req, res) => {
+
+            const cursor = touristSpotCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+
+        });
+
+
+        app.post('/tourists', async (req, res) => {
+            try {
+                const newSpot = req.body;
+                console.log(newSpot);
+                const result = await touristSpotCollection.insertOne(newSpot);
+                res.json(result); // Send the result as JSON
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ message: 'Internal server error' });
+            }
+        });
+
+
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
-        await client.close();
+        // await client.close();
     }
 }
 run().catch(console.dir);
