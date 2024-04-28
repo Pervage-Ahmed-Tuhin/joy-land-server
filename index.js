@@ -82,6 +82,31 @@ async function run() {
         })
 
 
+        app.put('/tourists/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const updateTouristSpot = req.body;
+
+            const TouristSpot = {
+                $set: {
+                    image: updateTouristSpot.image,
+                    touristsSpotName: updateTouristSpot.touristsSpotName,
+                    countryName: updateTouristSpot.countryName,
+                    location: updateTouristSpot.location,
+                    averageCost: updateTouristSpot.averageCost,
+                    seasonality: updateTouristSpot.seasonality,
+                    travelTime: updateTouristSpot.travelTime,
+                    totalVisitorsPerYear: updateTouristSpot.totalVisitorsPerYear,
+                    textarea: updateTouristSpot.textarea,
+                    UserName: updateTouristSpot.UserName
+                }
+            }
+
+            const result = await touristSpotCollection.updateOne(filter, TouristSpot, options);
+            res.send(result);
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
