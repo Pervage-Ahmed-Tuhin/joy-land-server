@@ -48,6 +48,17 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/tourists/email/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = {
+                UserEmail: email
+            }
+            const result = await touristSpotCollection.find(query).toArray();
+            console.log(result);
+            res.send(result);
+
+        })
+
 
         app.post('/tourists', async (req, res) => {
             try {
