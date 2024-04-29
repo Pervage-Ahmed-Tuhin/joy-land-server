@@ -6,6 +6,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 
+app.use(cors({ origin: ["http://localhost:5173/", "https://tourism-management-websi-84dfd.web.app"] }))
+
 // middleware
 
 app.use(cors());
@@ -26,7 +28,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        // await client.connect();
+
 
         const touristSpotCollection = client.db('tourist').collection('spots');
 
@@ -81,7 +83,7 @@ async function run() {
                 const newSpot = req.body;
                 console.log(newSpot);
                 const result = await touristSpotCollection.insertOne(newSpot);
-                res.json(result); // Send the result as JSON
+                res.json(result);
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ message: 'Internal server error' });
