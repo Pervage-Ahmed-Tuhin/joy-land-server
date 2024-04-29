@@ -30,7 +30,7 @@ async function run() {
 
         const touristSpotCollection = client.db('tourist').collection('spots');
 
-
+        const countriesCollection = client.db('countriesDB').collection('country');
 
 
         app.get('/tourists', async (req, res) => {
@@ -40,6 +40,12 @@ async function run() {
             res.send(result);
 
         });
+
+        app.get('/countries', async (req, res) => {
+            const cursor = countriesCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
 
         app.get('/tourists/:id', async (req, res) => {
             const id = req.params.id;
